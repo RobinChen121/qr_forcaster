@@ -10,8 +10,9 @@ from model import ForecasterQR
 from arguments import get_params
 from DatasetHandler import DatasetHandler
 
-
-data_path = os.path.join("data", "LD2011_2014.txt")
+import sys
+if sys.platform == 'win32':
+    data_path = os.path.join('D:/chenzhen/data/', "LD2011_2014.txt")
 TRAINED_MODEL_PATH = os.path.join("trained_models")
 DATALOADERS_PATH = os.path.join("dataloaders")
 
