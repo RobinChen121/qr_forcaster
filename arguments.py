@@ -7,7 +7,7 @@ def get_params():
     parser.add_argument("--epochs", type=int, default=1)
     parser.add_argument("--weight-decay", type=float, default=1e-5)
     parser.add_argument("--learning-rate", type=float, default=5e-2)
-    parser.add_argument("--use-nni", action="store_true", default=False)
+    parser.add_argument("--use-nni", action="store_true", default=False) # whether using nni
     parser.add_argument("--use-forking-sequences", action="store_true", default=False)
     parser.add_argument("--max-sequence-len", type=int, default=168)
     parser.add_argument("--forcast-horizons", type=int, default=24)

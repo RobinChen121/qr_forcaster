@@ -126,4 +126,4 @@ class ElDataset(Dataset):
         self.calendar_features = ["yearly_cycle", "weekly_cycle", "daily_cycle"]
 
     def el_resample(self, df):
-        return df.resample("1H", on="timestamp").mean().reset_index()
+        return df.resample("1h", on="timestamp").mean().reset_index() # replace H with h

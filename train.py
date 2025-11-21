@@ -11,8 +11,12 @@ from arguments import get_params
 from DatasetHandler import DatasetHandler
 
 import sys
+
+data_name = "LD2011_2014.txt"
 if sys.platform == 'win32':
-    data_path = os.path.join('D:/chenzhen/data/', "LD2011_2014.txt")
+    data_path = os.path.join('D:/chenzhen/data/', data_name)
+else:
+    data_path = os.path.join('/Users/zhenchen/Documents/machine learning data/', data_name)
 TRAINED_MODEL_PATH = os.path.join("trained_models")
 DATALOADERS_PATH = os.path.join("dataloaders")
 
@@ -22,9 +26,9 @@ def main(args):
     forking_total_seq_length = 500 if forking else None
     train_el_dataloader, val_el_dataloader = DatasetHandler(
         data_path,
-        num_samples=args.dataset_num_samples,
-        hist_hours=args.max_sequence_len,
-        pred_horizon=args.forcast_horizons,
+        num_samples=args.dataset_num_samples, # default is 1000
+        hist_hours=args.max_sequence_len, # default is 24*7 hours
+        pred_horizon=args.forcast_horizons, # default is next 24 hours
         batch_size=args.batch_size,  # with forking, use lower batch size!
         forking_total_seq_length=forking_total_seq_length).load_dataset()
 
