@@ -22,9 +22,9 @@ class DatasetHandler:
         if df is None:
             df = pd.read_csv(self.data_path,
                              parse_dates=[0],
-                             delimiter=";",
-                             decimal=",")
-            df.rename({"Unnamed: 0": "timestamp"}, axis=1, inplace=True)
+                             delimiter=";", # data separator
+                             decimal=",") # character that recognized as decimal
+            df.rename({"Unnamed: 0": "timestamp"}, axis=1, inplace=True) # rename the name of dataframe by mapper
         if split:
             df_train, df_val = self.split_df(df, True)
             train_dataset = ElDataset(df=df_train, num_samples=self.num_samples, hist_hours=self.hist_hours,
