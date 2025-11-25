@@ -5,8 +5,18 @@ import datetime
 from config import prod_model_path
 from model import ForecasterQR
 import matplotlib.pyplot as plt
+import sys
+import os
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
-data_path = os.path.join("data", "LD2011_2014.txt")
+# pytest 会自动收集文件名以 test_ 开头或者 _test 结尾的 Python 文件作为测试文件
+# 在 PyCharm 或命令行运行它时，pytest 会把它当成测试脚本去执行
+data_name = "LD2011_2014.txt"
+if sys.platform == 'win32':
+    data_path = os.path.join('D:/chenzhen/data/', data_name)
+else:
+    data_path = os.path.join('/Users/zhenchen/Documents/machine learning data/', data_name)
+
 
 TRAIN_DL_PATH = os.path.join("dataloaders", "train_dl.pkl")
 TEST_DL_PATH = os.path.join("dataloaders", "test_dl.pkl")
@@ -50,6 +60,8 @@ def plot_prediction(start_ts, household, model_output, y_past, y_future):
     plt.show()
 
 
+# the script will choose the best model from the trained models folder,
+# will sample a series from the dataloader, predict forecasting and plot it
 if __name__ == '__main__':
     # trained_model_list = os.listdir("trained_models")
     # best_model_index = np.argmin([int(name.split("=")[2].split(".")[0]) for name in trained_model_list])
@@ -57,8 +69,8 @@ if __name__ == '__main__':
     # TRAINED_MODEL_PATH = os.path.join("trained_models", TRAINED_MODEL_NAME)
 
     # TRAINED_MODEL_PATH = os.path.join("trained_models/model-epoch=49-val_loss=410.90.ckpt")
-    # TRAINED_MODEL_PATH = os.path.join("trained_models", "model-epoch=04-val_loss=709.13.ckpt")
-    TRAINED_MODEL_PATH = prod_model_path
+    TRAINED_MODEL_PATH = os.path.join("trained_models", "model-epoch=00-val_loss=890.84.ckpt")
+    # TRAINED_MODEL_PATH = prod_model_path
     model = ForecasterQR.load_from_checkpoint(TRAINED_MODEL_PATH)
     model.eval()
 
@@ -85,3 +97,4 @@ if __name__ == '__main__':
 
     household, start_timestamp, past_series, future_series, res = predict(model, dataset=pred_dataset, index=index)
     plot_prediction(start_timestamp, household, res, y_past=past_series, y_future=future_series)
+    print(res)

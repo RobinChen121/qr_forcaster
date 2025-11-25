@@ -1,5 +1,7 @@
 import nni
 from typing import List
+# PyTorch Lightning = PyTorch + 自动训练循环 + 自动分布式 + 自动日志 + 自动 checkpoint
+# 的优雅封装，大大减少代码量
 import pytorch_lightning as pl
 import torch
 from torch import nn
@@ -102,6 +104,8 @@ class ForecasterQR(pl.LightningModule):
             init_weight_decay: float,
             init_learning_rate: float
     ):
+        # 因为 ForecasterQR 继承了 pl.LightningModule，
+        # 所以 super().__init__() 会调用 LightningModule 的构造函数
         super(ForecasterQR, self).__init__()
         self.save_hyperparameters()
         self.metrics = {
@@ -131,7 +135,7 @@ class ForecasterQR(pl.LightningModule):
                                             x_future_dim=x_dim,
                                             k=horizons)
 
-        # create a local decoder foreach output step
+        # create a local decoder for each output step
         self.local_decoder = DecoderLocal(context_dim=decoder_context_dim,
                                           future_data_dim=x_dim, quantiles=quantiles)
 

@@ -13,7 +13,7 @@ best trained model will be saved to "/trained_models/" and the train/test datalo
 ## Testing
 testing the trained can be done by running:
 ```bash
-python3 test_pred.py
+python3 pred.py
 ```
 the script will choose the best model from the trained models folder, will sample a series from the dataloader, predict forecasting and plot it
 ## Prediction Results:

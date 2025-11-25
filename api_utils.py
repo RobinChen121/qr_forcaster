@@ -5,7 +5,7 @@ import pandas as pd
 from typing import List
 from pydantic import BaseModel
 from model import ForecasterQR
-from test_pred import predict
+from pred import predict
 from DatasetHandler import DatasetHandler
 from fastapi.encoders import jsonable_encoder
 

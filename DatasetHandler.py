@@ -26,7 +26,10 @@ class DatasetHandler:
                              decimal=",") # character that recognized as decimal
             df.rename({"Unnamed: 0": "timestamp"}, axis=1, inplace=True) # rename the name of dataframe by mapper
         if split:
+            # a little weired?
+            # default testing size is 0.5, training size 0.5*0.2, evaluating size = 0.5*0.8
             df_train, df_val = self.split_df(df, True)
+            # there are both raw data and sampled data in the dataset
             train_dataset = ElDataset(df=df_train, num_samples=self.num_samples, hist_hours=self.hist_hours,
                                       future_hours=self.pred_horizon,
                                       forking_total_seq_length=self.forking_total_seq_length)

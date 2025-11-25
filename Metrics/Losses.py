@@ -13,11 +13,14 @@ class QuantileLoss(Module):
     def forward(self, preds, target):
         """preds: tensor of shape (batch, num_horizons, num_quantiles)
         target: tensor of shape (batch, num_horizons"""
-        if self.device == "gpu":
-            preds = preds.to("cuda")
+        # if self.device == "gpu":
+        #     preds = preds.to("cuda")
+        # 动态选择设备
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        preds = preds.to(self.device)
         assert not target.requires_grad
         assert preds.size(0) == target.size(0)
-        preds = preds.to("cuda")
+        preds = preds.to(self.device)
         losses = []
         for i, q in enumerate(self.quantiles):
             errors = target - preds[:, :, i]

@@ -14,6 +14,7 @@ class ElDataset(Dataset):
             df: original electricity data (see HW intro for details).
             samples (int): number of sample to take per household.
         """
+        # resample date, aggregate to every hour's electricity
         self.raw_data = self.el_resample(df).set_index("timestamp")
         self.num_samples = num_samples
         self.hist_hours = hist_hours
@@ -102,6 +103,7 @@ class ElDataset(Dataset):
         if self.num_samples:
             idx = np.arange(self.num_samples * self.raw_data.shape[1])
             np.random.shuffle(idx)
+            # full timestamps minus the last 8 days
             timestamps = self.raw_data[:(self.raw_data.index.max() - self.full_length)].index.to_series()
         else:
             idx = np.arange(self.raw_data.shape[1])
@@ -111,6 +113,7 @@ class ElDataset(Dataset):
             self.raw_data = self.raw_data.reindex(timestamps)
 
         pairs = []
+        # every household sample 1000-hour timestamps
         for household in self.raw_data.columns:
             start_ts = timestamps.sample(self.num_samples) if self.num_samples else [timestamps[0]]
             pairs.extend([(household, sts) for sts in start_ts])
@@ -126,4 +129,5 @@ class ElDataset(Dataset):
         self.calendar_features = ["yearly_cycle", "weekly_cycle", "daily_cycle"]
 
     def el_resample(self, df):
+        # use resample to aggregate data at specific periodic intervals
         return df.resample("1h", on="timestamp").mean().reset_index() # replace H with h
